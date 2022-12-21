@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const dotenv = require('dotenv');
 const _url = require('url');
 
-const baseUrl = 'https://samehadaku.care/';
+const baseUrl = 'https://samehadaku.win/';
 
 module.exports.log = console.log;
 
