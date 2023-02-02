@@ -1,5 +1,5 @@
 // mod.cjs
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 const cheerio = require('cheerio');
 
 const {
@@ -70,8 +70,8 @@ module.exports.allAnime = async (req, res) => {
 
 module.exports.detailAnime = async (req, res) => {
   const params = req.query.url;
-  if (!params ) return res.json({ status : `invalid`, message : "[!] input parameter url"})
-	
+  if (!params) return res.json({ status: `invalid`, message: "[!] input parameter url" })
+
   const fullUrl = params;
 
   try {
@@ -87,10 +87,10 @@ module.exports.detailAnime = async (req, res) => {
 
     element
       .eq(0)
-      .map(function () {
+      .map(function() {
         $(this)
           .find(".widget_senction > .listeps > ul > li")
-          .map(function () {
+          .map(function() {
             title = $(this).find("div:nth-child(2) > .lchx > a ").text();
             id = $(this)
               .find("div:nth-child(2) > .lchx > a ")
@@ -111,9 +111,9 @@ module.exports.detailAnime = async (req, res) => {
           id:
             $(this).find(".whites > .listbatch").text().length !== 0
               ? $(this)
-                  .find(".whites > .listbatch > a")
-                  .attr("href")
-                  .replace(`${baseUrl}batch/`, "")
+                .find(".whites > .listbatch > a")
+                .attr("href")
+                .replace(`${baseUrl}batch/`, "")
               : "Masih Kosong",
           link:
             $(this).find(".whites > .listbatch").text().length !== 0
@@ -157,7 +157,7 @@ module.exports.ongoingAnime = async (req, res) => {
     element
       .eq(0)
       .find("li")
-      .map(function () {
+      .map(function() {
         title = $(this).find(".dtla > .entry-title > a").text();
         eps = $(this).find(".dtla > span:nth-child(2) > author").text();
         id = $(this)
@@ -212,7 +212,7 @@ module.exports.animeSchedule = async (req, res) => {
     const day = element
       .eq(0)
       .find(".post-show .tab-dates")
-      .map(function () {
+      .map(function() {
         return $(this).text().trim();
       })
       .toArray();
@@ -220,12 +220,12 @@ module.exports.animeSchedule = async (req, res) => {
     schedules.anime_list = element
       .eq(0)
       .find(".post-show > .result-schedule")
-      .map(function (i) {
+      .map(function(i) {
         return {
           day: day[i],
           anime_list: $(this)
             .find(".animepost")
-            .map(function () {
+            .map(function() {
               return {
                 thumb: (
                   $(this)
@@ -286,7 +286,7 @@ module.exports.allGenres = async (req, res) => {
     element
       .eq(0)
       .find(".genre li")
-      .map(function () {
+      .map(function() {
         title = $(this).find("a").attr("title");
         id = $(this).find("a").attr("href").replace(`${baseUrl}genre/`, "");
         link = $(this).find("a").attr("href");
@@ -380,7 +380,7 @@ module.exports.allBatch = async (req, res) => {
 
 module.exports.detailBatch = async (req, res) => {
   const params = req.query.url;
-  if (!params ) return res.json({ status : `invalid`, message : "[!] input parameter url"})
+  if (!params) return res.json({ status: `invalid`, message: "[!] input parameter url" })
   const fullUrl = params;
 
   try {
@@ -409,7 +409,7 @@ module.exports.detailBatch = async (req, res) => {
 
     element
       .eq(0)
-      .map(function () {
+      .map(function() {
         animeObject.data_from = `${fullUrl}`;
         animeObject.thumb = ($(this).find(".anmsa").attr("src") || "?").split(
           "?"
@@ -424,160 +424,160 @@ module.exports.detailBatch = async (req, res) => {
         for (let i = 1; i <= 13; i++) {
           $(this)
             .find(`.anim-senct > .right-senc > .infoanime > .infox > .spe`)
-            .map(function () {
+            .map(function() {
               let isContain = $(this).find(`span:nth-child(${i})`).text();
 
               isContain.match("Japanese") && animeObject.japanese === undefined
                 ? (animeObject.japanese = isContain
-                    .replace("Japanese ", "")
-                    .trim())
+                  .replace("Japanese ", "")
+                  .trim())
                 : ""
 
               isContain.match("English") && animeObject.english === ""
                 ? (animeObject.english = isContain
-                    .replace("English ", "")
-                    .trim())
+                  .replace("English ", "")
+                  .trim())
                 : ""
 
               isContain.match("Type") && animeObject.type === ""
                 ? (animeObject.type = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Type ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Type ", "")
+                  .trim())
                 : ""
 
               isContain.match("Score") && animeObject.score === ""
                 ? (animeObject.score = parseFloat(
-                    $(this)
-                      .find(`span:nth-child(${i})`)
-                      .text()
-                      .replace("Score ", "")
-                      .trim()
-                  ))
+                  $(this)
+                    .find(`span:nth-child(${i})`)
+                    .text()
+                    .replace("Score ", "")
+                    .trim()
+                ))
                 : ""
 
               isContain.match("Duration") && animeObject.duration === ""
                 ? (animeObject.duration = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Duration ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Duration ", "")
+                  .trim())
                 : ""
 
               isContain.match("Total Episode") &&
-              animeObject.total_episode === "-"
+                animeObject.total_episode === "-"
                 ? (animeObject.total_episode = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Total Episode ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Total Episode ", "")
+                  .trim())
                 : ""
 
               isContain.match("Genre") || animeObject.genre_list === undefined
                 ? $(this)
-                    .find(`span:nth-child(${i}) > a`)
-                    .map(function () {
-                      genre_name = $(this).text();
-                      genre_id = $(this)
-                        .attr("href")
-                        .replace(`${baseUrl}genre/`, "");
-                      genre_link = $(this).attr("href");
-                      genreList.push({
-                        genre_name,
-                        genre_id,
-                        genre_link,
-                      });
-                      animeObject.genre_list = genreList;
-                    })
+                  .find(`span:nth-child(${i}) > a`)
+                  .map(function() {
+                    genre_name = $(this).text();
+                    genre_id = $(this)
+                      .attr("href")
+                      .replace(`${baseUrl}genre/`, "");
+                    genre_link = $(this).attr("href");
+                    genreList.push({
+                      genre_name,
+                      genre_id,
+                      genre_link,
+                    });
+                    animeObject.genre_list = genreList;
+                  })
                 : ""
 
               isContain.match("Season") || animeObject.season_list === undefined
                 ? $(this)
-                    .find(`span:nth-child(${i}) > a`)
-                    .map(function () {
-                      season_name = $(this).text();
-                      season_id = $(this)
-                        .attr("href")
-                        .replace(`${baseUrl}season/`, "");
-                      season_link = $(this).attr("href");
-                      seasonList.push({
-                        season_name,
-                        season_id,
-                        season_link,
-                      });
-                      animeObject.season_list = seasonList;
-                    })
+                  .find(`span:nth-child(${i}) > a`)
+                  .map(function() {
+                    season_name = $(this).text();
+                    season_id = $(this)
+                      .attr("href")
+                      .replace(`${baseUrl}season/`, "");
+                    season_link = $(this).attr("href");
+                    seasonList.push({
+                      season_name,
+                      season_id,
+                      season_link,
+                    });
+                    animeObject.season_list = seasonList;
+                  })
                 : ""
 
               isContain.match("Producers") ||
-              animeObject.producer_list === undefined
+                animeObject.producer_list === undefined
                 ? $(this)
-                    .find(`span:nth-child(${i}) > a`)
-                    .map(function () {
-                      producer_name = $(this).text();
-                      producer_id = $(this)
-                        .attr("href")
-                        .replace(`${baseUrl}producers/`, "");
-                      producer_link = $(this).attr("href");
-                      producerList.push({
-                        producer_name,
-                        producer_id,
-                        producer_link,
-                      });
-                      animeObject.producer_list = producerList;
-                    })
+                  .find(`span:nth-child(${i}) > a`)
+                  .map(function() {
+                    producer_name = $(this).text();
+                    producer_id = $(this)
+                      .attr("href")
+                      .replace(`${baseUrl}producers/`, "");
+                    producer_link = $(this).attr("href");
+                    producerList.push({
+                      producer_name,
+                      producer_id,
+                      producer_link,
+                    });
+                    animeObject.producer_list = producerList;
+                  })
                 : ""
 
               isContain.match("Synonyms") && animeObject.synonym === ""
                 ? (animeObject.synonym = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Synonyms ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Synonyms ", "")
+                  .trim())
                 : ""
 
               isContain.match("Status") && animeObject.status === ""
                 ? (animeObject.status = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Status ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Status ", "")
+                  .trim())
                 : ""
 
               isContain.match("Source") && animeObject.source === ""
                 ? (animeObject.source = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Source ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Source ", "")
+                  .trim())
                 : ""
 
               isContain.match("Studio") &&
-              animeObject.studio_list[0] === undefined
+                animeObject.studio_list[0] === undefined
                 ? $(this)
-                    .find(`span:nth-child(${i}) > a`)
-                    .map(function () {
-                      studio_name = $(this).text();
-                      studio_id = $(this)
-                        .attr("href")
-                        .replace(`${baseUrl}studio/`, "");
-                      studio_link = $(this).attr("href");
-                      studioList.push({
-                        studio_name,
-                        studio_id,
-                        studio_link,
-                      });
-                      animeObject.studio_list = studioList;
-                    })
+                  .find(`span:nth-child(${i}) > a`)
+                  .map(function() {
+                    studio_name = $(this).text();
+                    studio_id = $(this)
+                      .attr("href")
+                      .replace(`${baseUrl}studio/`, "");
+                    studio_link = $(this).attr("href");
+                    studioList.push({
+                      studio_name,
+                      studio_id,
+                      studio_link,
+                    });
+                    animeObject.studio_list = studioList;
+                  })
                 : ""
 
               isContain.match("Rilis:") && animeObject.release_date === ""
                 ? (animeObject.release_date = $(this)
-                    .find(`span:nth-child(${i})`)
-                    .text()
-                    .replace("Rilis: ", "")
-                    .trim())
+                  .find(`span:nth-child(${i})`)
+                  .text()
+                  .replace("Rilis: ", "")
+                  .trim())
                 : ""
 
               if (animeObject.japanese === undefined) {
@@ -630,24 +630,24 @@ module.exports.detailBatch = async (req, res) => {
 
         title = $(this)
           .find(".content-post > .download-eps")
-          .map(function () {
+          .map(function() {
             return $(this).find("p").text();
           })
           .toArray();
 
         animeObject.download_list = $(this)
           .find(".content-post > .download-eps")
-          .map(function (i) {
+          .map(function(i) {
             return {
               title: title[i],
               content: $(this)
                 .find("ul li")
-                .map(function () {
+                .map(function() {
                   return {
                     quality: $(this).find("strong").text().trim(),
                     vendor: $(this)
                       .find("span")
-                      .map(function () {
+                      .map(function() {
                         return {
                           name: $(this).find("a").text(),
                           link: $(this).find("a").attr("href"),
@@ -674,7 +674,7 @@ module.exports.detailBatch = async (req, res) => {
 
 module.exports.showEpisode = async (req, res) => {
   const params = req.query.url;
-  if (!params ) return res.json({ status : `invalid`, message : "[!] input parameter url"})
+  if (!params) return res.json({ status: `invalid`, message: "[!] input parameter url" })
   const fullUrl = params;
 
   try {
@@ -717,7 +717,7 @@ module.exports.showEpisode = async (req, res) => {
 
     element
       .eq(0)
-      .map(function () {
+      .map(function() {
         animeObject.status = "success"
         animeObject.data_from = fullUrl;
         animeObject.title = $(this).find(".entry-title").text();
@@ -745,24 +745,24 @@ module.exports.showEpisode = async (req, res) => {
 
     title = $(".infoeps")
       .find(".download-eps")
-      .map(function () {
+      .map(function() {
         return $(this).find("p").text();
       })
       .toArray();
 
     animeObject.download_list = $(".infoeps")
       .find(".download-eps")
-      .map(function (i) {
+      .map(function(i) {
         return {
           title: title[i],
           content: $(this)
             .find("ul li")
-            .map(function () {
+            .map(function() {
               return {
                 quality: $(this).find("strong").text().trim(),
                 vendor: $(this)
                   .find("span")
-                  .map(function () {
+                  .map(function() {
                     return {
                       name: $(this).find("a").text(),
                       link: $(this).find("a").attr("href"),
@@ -810,7 +810,7 @@ module.exports.allAnimeMovie = async (req, res) => {
 
 module.exports.searchAnime = async (req, res) => {
   const query = req.query.query;
-  if (!query ) return res.json({ status : `invalid`, message : "[!] input parameter query"})
+  if (!query) return res.json({ status: `invalid`, message: "[!] input parameter query" })
   const fullUrl = `${baseUrl}?s=${query}`;
 
   try {

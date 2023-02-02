@@ -10,8 +10,9 @@ app.use("/api", routes);
 
 app.use("/", (req, res) => {
   res.json({
-    message: "Welcome",
-    host: req.protocol + "s://" + req.get("host")
+    host: req.protocol + "s://" + req.get("host"),
+    message:
+      "Please read the documentation at https://github.com/Hanivan/restAPI-Samehadaku"
   });
 });
 
